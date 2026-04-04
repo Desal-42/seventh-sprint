@@ -185,6 +185,11 @@ function renderPlayers() {
     const hapClass = getHappinessClass(player.happiness);
     const barPct   = getBarPercent(player.happiness);
     const barClass = hapClass;
+    
+    // Add burned-out class to row if player is burned out
+    if (player.happiness <= 0) {
+      row.classList.add("burned-out");
+    }
 
     row.innerHTML = `
       <div class="player-avatar">${initials}</div>
@@ -264,6 +269,12 @@ function applyMondayBlues() {
     player.happiness -= 1;
     updatePlayerDisplay(idx);
   });
+  
+  // Check if all players are burned-out
+  if (state.players.every(player => player.happiness <= 0)) {
+    setTimeout(() => showFailureScreen(), 800);
+    return;
+  }
 }
 
 // ─────────────────────────────────────────── END WEEK
@@ -272,8 +283,10 @@ function endWeek() {
   // Apply Monday Blues
   applyMondayBlues();
 
-  // Show toast
-  showToast("Monday Blues: −1 happiness applied to all ☕");
+  // Show toast only if game is not over
+  if (!state.gameOver) {
+    showToast("Monday Blues: −1 happiness applied to all ☕");
+  }
 
   if (state.currentWeek >= 7) {
     // Fin de partie
@@ -285,6 +298,26 @@ function endWeek() {
 }
 
 // ─────────────────────────────────────────── END SCREEN
+
+function showFailureScreen() {
+  state.gameOver = true;
+  showScreen("screen-failure");
+  
+  document.getElementById("failure-subtitle").textContent =
+    `${state.company} · ${state.project} · Week ${state.currentWeek}`;
+  
+  const scoresEl = document.getElementById("failure-scores");
+  scoresEl.innerHTML = "";
+  state.players.forEach(player => {
+    const row = document.createElement("div");
+    row.className = "failure-score-row";
+    row.innerHTML = `
+      <span class="failure-score-name">${escapeHtml(player.name)}</span>
+      <span class="failure-score-value burned-out">${player.happiness} / 10 ⚰️</span>
+    `;
+    scoresEl.appendChild(row);
+  });
+}
 
 function showEndScreen() {
   showScreen("screen-end");
@@ -341,7 +374,7 @@ function showScreen(id) {
 }
 
 function getHappinessClass(h) {
-  if (h < 0)  return "negative";
+  if (h <= 0) return "burned-out";
   if (h < 4)  return "negative";
   if (h < 6)  return "warning";
   if (h < 8)  return "";         // neutral/default blue
