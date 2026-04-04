@@ -848,6 +848,17 @@ html, body {
 
 .btn-restart { margin-top: 4px; }
 
+#screen-special-end {
+  align-items: center;
+  justify-content: center;
+  background: var(--navy);
+  padding: 40px 20px;
+}
+
+.end-quote.special-end-quote {
+  border-left-color: var(--amber);
+}
+
 /* ═══════════════════════════════════════ RESPONSIVE */
 @media (max-width: 720px) {
   .game-main {

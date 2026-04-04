@@ -64,6 +64,14 @@ const END_QUOTES = [
   "\"Git log shows 47 commits of type 'fix: fix the fix'. That's discipline.\" — Tech Lead"
 ];
 
+const SPECIAL_END_QUOTES = [
+  "\"We shipped! The fact that the team is now in the hospital is just a minor detail.\" — Product Owner",
+  "\"They said it was impossible. Well, it was impossible to keep the team alive, but we delivered!\" — Scrum Master",
+  "\"The project is a success. The human cost? That's what interns are for.\" — Management",
+  "\"We put the 'agile' in 'fragile'. Mission accomplished!\" — Tech Lead",
+  "\"The code works perfectly. The developers? Not so much.\" — QA Team"
+];
+
 // ─────────────────────────────────────────── ÉTAT DU JEU
 
 let state = {
@@ -271,7 +279,8 @@ function applyMondayBlues() {
   });
   
   // Check if all players are burned-out
-  if (state.players.every(player => player.happiness <= 0)) {
+  // But only show failure screen if we're not on the final week
+  if (state.players.every(player => player.happiness <= 0) && state.currentWeek < 7) {
     setTimeout(() => showFailureScreen(), 800);
     return;
   }
@@ -290,7 +299,14 @@ function endWeek() {
 
   if (state.currentWeek >= 7) {
     // Fin de partie
-    setTimeout(() => showEndScreen(), 1200);
+    setTimeout(() => {
+      // Check if everyone is dead at the end
+      if (state.players.every(player => player.happiness <= 0)) {
+        showSpecialEndScreen();
+      } else {
+        showEndScreen();
+      }
+    }, 1200);
   } else {
     state.currentWeek++;
     setTimeout(() => renderGameUI(), 800);
@@ -346,6 +362,28 @@ function showEndScreen() {
 
   const quote = END_QUOTES[Math.floor(Math.random() * END_QUOTES.length)];
   document.getElementById("end-quote").textContent = quote;
+}
+
+function showSpecialEndScreen() {
+  showScreen("screen-special-end");
+
+  document.getElementById("special-end-subtitle").textContent =
+    `${state.company} · ${state.project} · 7 weeks of sprint`;
+
+  const scoresEl = document.getElementById("special-end-scores");
+  scoresEl.innerHTML = "";
+  state.players.forEach(player => {
+    const row = document.createElement("div");
+    row.className = "end-score-row";
+    row.innerHTML = `
+      <span class="end-score-name">${escapeHtml(player.name)}</span>
+      <span class="end-score-value burned-out">${player.happiness} / 10 ⚰️</span>
+    `;
+    scoresEl.appendChild(row);
+  });
+
+  const quote = SPECIAL_END_QUOTES[Math.floor(Math.random() * SPECIAL_END_QUOTES.length)];
+  document.getElementById("special-end-quote").textContent = quote;
 }
 
 // ─────────────────────────────────────────── RESTART
