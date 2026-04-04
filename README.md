@@ -1,2 +1,2 @@
 # seventh-sprint
-Un jeu de simulation de sprints Agile, mélangeant éléments physiques et digitaux pour apprendre les méthodes SCRUM en s'amusant.
+An Agile sprint simulation game, blending physical and digital elements to learn SCRUM methods while having fun.

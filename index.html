@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,13 +19,13 @@
         <div class="logo-badge">SS</div>
         <div>
           <h1 class="setup-title">Seventh Sprint</h1>
-          <p class="setup-subtitle">Simulateur de Sprint Agile · v2.4.1</p>
+          <p class="setup-subtitle">Agile Sprint Simulator · v2.4.1</p>
         </div>
       </div>
 
       <div class="setup-card">
         <div class="setup-section">
-          <label class="field-label">Entreprise</label>
+          <label class="field-label">Company</label>
           <div class="select-wrapper">
             <select id="company-name">
               <option value="Microslop">Microslop</option>
@@ -33,26 +33,26 @@
               <option value="Glitchsoft">Glitchsoft</option>
               <option value="Pixel Factory">Pixel Factory</option>
               <option value="IndieForge">IndieForge</option>
-              <option value="custom">— Personnalisé —</option>
+              <option value="custom">— Custom —</option>
             </select>
           </div>
-          <input type="text" id="company-custom" class="field-input hidden" placeholder="Nom de votre entreprise…" />
+          <input type="text" id="company-custom" class="field-input hidden" placeholder="Your company name…" />
         </div>
 
         <div class="setup-section">
-          <label class="field-label">Nom du projet</label>
-          <input type="text" id="project-name" class="field-input" placeholder="Ex : Projet Phoenix" />
+          <label class="field-label">Project Name</label>
+          <input type="text" id="project-name" class="field-input" placeholder="Ex: Project Phoenix" />
         </div>
 
         <div class="setup-section">
-          <label class="field-label">Objectif du sprint</label>
-          <input type="text" id="project-goal" class="field-input" placeholder="Ex : Livrer la démo jouable avant la fin du Q4" />
+          <label class="field-label">Sprint Goal</label>
+          <input type="text" id="project-goal" class="field-input" placeholder="Ex: 14" />
         </div>
 
         <div class="setup-divider"></div>
 
         <div class="setup-section">
-          <label class="field-label">Nombre de joueurs</label>
+          <label class="field-label">Number of Players</label>
           <div class="player-count-row">
             <button class="count-btn" id="count-minus" onclick="adjustPlayerCount(-1)">−</button>
             <span class="count-display" id="player-count-display">3</span>
@@ -61,16 +61,16 @@
         </div>
 
         <div id="player-names-container" class="players-grid">
-          <!-- Généré dynamiquement -->
+          <!-- Generated dynamically -->
         </div>
 
         <button class="btn-primary btn-start" onclick="startGame()">
-          <span>Lancer le Sprint</span>
+          <span>Start Sprint</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
 
-      <p class="setup-footer">© Seventh Sprint · Tous les bugs sont des fonctionnalités.</p>
+      <p class="setup-footer">© Seventh Sprint · All bugs are features.</p>
     </div>
   </div>
 
@@ -88,12 +88,12 @@
       </div>
       <div class="topbar-center">
         <div class="week-tracker" id="week-tracker">
-          <!-- Dots générés dynamiquement -->
+          <!-- Dots generated dynamically -->
         </div>
       </div>
       <div class="topbar-right">
         <div class="week-badge">
-          <span class="week-label">SEMAINE</span>
+          <span class="week-label">WEEK</span>
           <span class="week-number" id="current-week-display">1</span>
           <span class="week-label">/ 7</span>
         </div>
@@ -106,8 +106,8 @@
       <!-- Left: Week Card -->
       <section class="panel panel-week">
         <div class="panel-header">
-          <span class="panel-tag">CARTE SEMAINE</span>
-          <span class="panel-hint" id="week-card-hint">Cliquez pour révéler</span>
+          <span class="panel-tag">WEEK CARD</span>
+          <span class="panel-hint" id="week-card-hint">Click to reveal</span>
         </div>
 
         <div class="week-card-wrapper">
@@ -117,8 +117,8 @@
                 <div class="week-card-lock">
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 </div>
-                <p class="week-card-front-label">Confidentiel</p>
-                <p class="week-card-front-sub">Cliquez pour ouvrir l'enveloppe</p>
+                <p class="week-card-front-label">Confidential</p>
+                <p class="week-card-front-sub">Click to open envelope</p>
               </div>
             </div>
             <div class="week-card-back" id="week-card-back">
@@ -128,14 +128,14 @@
                 <span class="effect-icon" id="effect-icon">●</span>
                 <span id="effect-text">—</span>
               </div>
-              <p class="week-card-reminder">Effet optionnel — à vous de décider.</p>
+              <p class="week-card-reminder">Optional effect — your decision.</p>
             </div>
           </div>
         </div>
 
         <div class="panel-footer">
           <div class="goal-box">
-            <span class="goal-label">OBJECTIF</span>
+            <span class="goal-label">GOAL</span>
             <span class="goal-text" id="display-goal">—</span>
           </div>
         </div>
@@ -144,21 +144,21 @@
       <!-- Right: Players -->
       <section class="panel panel-players">
         <div class="panel-header">
-          <span class="panel-tag">ÉQUIPE</span>
-          <span class="panel-hint" id="players-subtitle">Ajustez le bonheur manuellement</span>
+          <span class="panel-tag">TEAM</span>
+          <span class="panel-hint" id="players-subtitle">Adjust happiness manually</span>
         </div>
 
         <div class="players-list" id="players-list">
-          <!-- Généré dynamiquement -->
+          <!-- Generated dynamically -->
         </div>
 
         <div class="end-week-zone">
           <div class="monday-blues-notice" id="monday-blues-notice">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Monday Blues : −1 bonheur pour tous à la fin de semaine
+            Monday Blues: −1 happiness for all at end of week
           </div>
           <button class="btn-primary btn-end-week" id="btn-end-week" onclick="endWeek()">
-            <span id="btn-end-week-label">Fin de Semaine</span>
+            <span id="btn-end-week-label">End Week</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </div>
@@ -169,7 +169,7 @@
     <!-- Monday Blues Toast -->
     <div class="toast" id="toast">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2l-19 19M14 5c0 4-3.5 8-5 10"/><circle cx="12" cy="20" r="2"/></svg>
-      <span id="toast-text">Monday Blues appliqué !</span>
+      <span id="toast-text">Monday Blues applied!</span>
     </div>
 
   </div>
@@ -179,14 +179,14 @@
     <div class="end-container">
       <div class="end-confetti" id="end-confetti"></div>
       <div class="end-badge">🏁</div>
-      <h2 class="end-title">Sprint Terminé !</h2>
+      <h2 class="end-title">Sprint Complete!</h2>
       <p class="end-subtitle" id="end-subtitle">—</p>
       <div class="end-scores" id="end-scores">
-        <!-- Généré dynamiquement -->
+        <!-- Generated dynamically -->
       </div>
       <div class="end-quote" id="end-quote">—</div>
       <button class="btn-primary btn-restart" onclick="restartGame()">
-        Nouvelle Partie
+        New Game
       </button>
     </div>
   </div>

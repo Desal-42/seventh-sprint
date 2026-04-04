@@ -8,44 +8,44 @@
 const WEEK_CARDS = [
   {
     id: 1,
-    text: "Kickoff motivant ! L'équipe arrive gonflée à bloc, le café est gratuit, et le Product Owner est (exceptionnellement) disponible.",
-    effect: "+1 bonheur si travail normal",
+    text: "Motivating kickoff! The team is pumped, coffee is free, and the Product Owner is (exceptionally) available.",
+    effect: "+1 happiness if normal work",
     type: "positive"
   },
   {
     id: 2,
-    text: "Réunion improductive de 3h pour décider de la police d'écriture du README. Personne n'a osé dire stop.",
-    effect: "−1 bonheur si travail intensif",
+    text: "3-hour unproductive meeting to decide on the README font. Nobody dared to say stop.",
+    effect: "−1 happiness if intensive work",
     type: "negative"
   },
   {
     id: 3,
-    text: "Pause café prolongée. Le bug mystérieux s'est résolu tout seul pendant que personne ne regardait.",
-    effect: "Aucun effet (repos mérité)",
+    text: "Extended coffee break. The mysterious bug resolved itself while no one was looking.",
+    effect: "No effect (well-deserved rest)",
     type: "neutral"
   },
   {
     id: 4,
-    text: "Feedback client positif ! Le client a dit \"c'est pas mal\" — ce qui, dans ce secteur, équivaut à une standing ovation.",
-    effect: "+1 bonheur pour tous",
+    text: "Positive client feedback! The client said \"not bad\" — which, in this industry, is equivalent to a standing ovation.",
+    effect: "+1 happiness for all",
     type: "positive"
   },
   {
     id: 5,
-    text: "Bugs critiques découverts en production. Le testeur était en vacances. Git blame pointe vers quelqu'un qui a quitté l'entreprise en 2019.",
-    effect: "−1 bonheur si travail intensif",
+    text: "Critical bugs discovered in production. The tester was on vacation. Git blame points to someone who left the company in 2019.",
+    effect: "−1 happiness if intensive work",
     type: "negative"
   },
   {
     id: 6,
-    text: "Dernière ligne droite. L'esprit d'équipe atteint son apogée. Quelqu'un a commandé des pizzas. La dette technique sera \"gérée après\".",
-    effect: "+1 bonheur si travail normal",
+    text: "Final stretch. Team spirit reaches its peak. Someone ordered pizzas. Technical debt will be \"handled later\".",
+    effect: "+1 happiness if normal work",
     type: "positive"
   },
   {
     id: 7,
-    text: "Livraison ! Le projet est en production. Il reste 3 TODO dans le code, mais on les appellera des 'fonctionnalités futures'.",
-    effect: "+2 bonheur si objectif atteint",
+    text: "Delivery! The project is in production. There are 3 TODOs left in the code, but we'll call them 'future features'.",
+    effect: "+2 happiness if goal achieved",
     type: "positive"
   }
 ];
@@ -57,11 +57,11 @@ const EFFECT_ICONS = {
 };
 
 const END_QUOTES = [
-  "\"On a livré dans les temps. C'est historique.\" — Product Owner, avec des larmes dans les yeux",
-  "\"La définition de 'Done' était peut-être un peu... floue. Mais c'est fait.\" — Scrum Master",
-  "\"Le client a dit que ça ressemblait à ce qu'il avait demandé. Plus ou moins.\" — Dev Lead",
-  "\"Sprint terminé avec succès. L'équipe survivra. Pour l'instant.\" — Direction générale",
-  "\"Git log montre 47 commits de type 'fix: fix the fix'. C'est de la discipline.\" — Tech Lead"
+  "\"We delivered on time. It's historic.\" — Product Owner, with tears in their eyes",
+  "\"The definition of 'Done' was maybe a bit... fuzzy. But it's done.\" — Scrum Master",
+  "\"The client said it looks like what they asked for. More or less.\" — Dev Lead",
+  "\"Sprint completed successfully. The team will survive. For now.\" — Management",
+  "\"Git log shows 47 commits of type 'fix: fix the fix'. That's discipline.\" — Tech Lead"
 ];
 
 // ─────────────────────────────────────────── ÉTAT DU JEU
@@ -98,7 +98,7 @@ function renderPlayerInputs() {
     group.innerHTML = `
       <label class="player-num-label">P${i}</label>
       <input type="text" id="player-input-${i}" class="field-input"
-             placeholder="Joueur ${i}" value="${val}" maxlength="18" />
+             placeholder="Player ${i}" value="${val}" maxlength="18" />
     `;
     container.appendChild(group);
   }
@@ -112,13 +112,13 @@ function startGame() {
     ? (companyCustom || "Mon Entreprise")
     : companySelect;
 
-  state.project = document.getElementById("project-name").value.trim() || "Projet Mystère";
-  state.goal = document.getElementById("project-goal").value.trim() || "Livrer quelque chose de fonctionnel";
+  state.project = document.getElementById("project-name").value.trim() || "Mystery Project";
+  state.goal = document.getElementById("project-goal").value.trim() || "20";
 
-  // Joueurs
+  // Players
   state.players = [];
   for (let i = 1; i <= state.playerCount; i++) {
-    const name = document.getElementById(`player-input-${i}`).value.trim() || `Joueur ${i}`;
+    const name = document.getElementById(`player-input-${i}`).value.trim() || `Player ${i}`;
     state.players.push({ name, happiness: 7 });
   }
 
@@ -151,7 +151,7 @@ function renderGameUI() {
 
   // Button label
   const btn = document.getElementById("btn-end-week-label");
-  btn.textContent = state.currentWeek < 7 ? "Fin de Semaine" : "Terminer le Sprint";
+  btn.textContent = state.currentWeek < 7 ? "End Week" : "Complete Sprint";
 }
 
 function renderWeekDots() {
@@ -190,7 +190,7 @@ function renderPlayers() {
       <div class="player-avatar">${initials}</div>
       <div class="player-info">
         <div class="player-name">${escapeHtml(player.name)}</div>
-        <div class="player-happiness-label">Bonheur</div>
+        <div class="player-happiness-label">Happiness</div>
       </div>
       <div class="happiness-bar-wrap">
         <div class="happiness-bar">
@@ -202,9 +202,9 @@ function renderPlayers() {
         <span class="happiness-value ${hapClass}" id="happiness-val-${idx}">${player.happiness}</span>
       </div>
       <div class="player-btns">
-        <button class="hap-btn plus"  onclick="adjustHappiness(${idx}, 1)"  title="+1 bonheur">+</button>
-        <button class="hap-btn minus" onclick="adjustHappiness(${idx}, -1)" title="−1 bonheur">−</button>
-        <button class="hap-btn rest"  onclick="adjustHappiness(${idx}, 0)"  title="Repos">ZZZ</button>
+        <button class="hap-btn plus"  onclick="adjustHappiness(${idx}, 1)"  title="+1 happiness">+</button>
+        <button class="hap-btn minus" onclick="adjustHappiness(${idx}, -1)" title="−1 happiness">−</button>
+        <button class="hap-btn rest"  onclick="adjustHappiness(${idx}, 0)"  title="Rest">ZZZ</button>
       </div>
     `;
     list.appendChild(row);
@@ -273,7 +273,7 @@ function endWeek() {
   applyMondayBlues();
 
   // Show toast
-  showToast("Monday Blues : −1 bonheur appliqué à tous ☕");
+  showToast("Monday Blues: −1 happiness applied to all ☕");
 
   if (state.currentWeek >= 7) {
     // Fin de partie
@@ -290,7 +290,7 @@ function showEndScreen() {
   showScreen("screen-end");
 
   document.getElementById("end-subtitle").textContent =
-    `${state.company} · ${state.project} · 7 semaines de sprint`;
+    `${state.company} · ${state.project} · 7 weeks of sprint`;
 
   const scoresEl = document.getElementById("end-scores");
   scoresEl.innerHTML = "";
